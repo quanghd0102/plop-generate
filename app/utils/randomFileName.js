@@ -1,7 +1,6 @@
 'use strict';
 
 const Crypto = require('crypto');
-const slug = require('slug');
 
 const getDateString = function () {
   const now = new Date();
@@ -17,9 +16,10 @@ const getRandomString = function () {
 
 const getFileName = function (fileName, prependDate) {
   const index = fileName.indexOf('.');
-  const file = slug(fileName.substring(0, index));
+  const file = fileName.substring(0, index);
   const extension = fileName.substring(index);
   const name = file + '-' + getRandomString() + extension;
+
   if (prependDate) {
     return getDateString() + '/' + name;
   }

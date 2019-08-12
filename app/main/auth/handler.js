@@ -69,11 +69,22 @@ exports.resetPassword = {
   }
 };
 
+exports.changePassword = {
+  description: 'change password api',
+  notes: 'change password of an user to new one',
+  tags: ['api', 'v1'],
+  handler: controller.changePassword.bind(controller),
+  auth: 'jwt',
+  validate: {
+    payload: validator.changePassword
+  }
+};
+
 exports.loginFacebook = {
   description: 'Login with facebook for mobile app',
   notes: 'Login with facebook for mobile app return session token',
   tags: ['api', 'v1'],
   handler: controller.loginFacebook.bind(controller),
   auth: false,
-  validate: { query: validator.validateFacebook }
+  validate: validator.validateFacebook
 };

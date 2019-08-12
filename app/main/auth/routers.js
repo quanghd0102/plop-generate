@@ -9,11 +9,6 @@ const Routes = [
   },
   {
     method: 'POST',
-    path: '/api/v1/auth/loginFacebook',
-    config: handler.loginFacebook
-  },
-  {
-    method: 'POST',
     path: '/api/v1/auth/register',
     config: handler.register
   },
@@ -31,7 +26,22 @@ const Routes = [
     method: 'POST',
     path: '/api/v1/auth/resetPassword',
     config: handler.resetPassword
+  },
+  {
+    method: 'POST',
+    path: '/api/v1/auth/changePassword',
+    config: handler.changePassword
+  },
+  {
+    method: 'POST',
+    path: '/api/v1/auth/facebook',
+    config: handler.loginFacebook
   }
+  // {
+  //   method: 'POST',
+  //   path: '/api/v1/auth/registerByToken',
+  //   config: handler.registerByToken
+  // }
 ];
 
 module.exports = Routes;

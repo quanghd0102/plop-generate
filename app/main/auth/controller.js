@@ -61,6 +61,15 @@ class AuthController {
     }
   }
 
+  async changePassword(request) {
+    try {
+      const { id } = request.auth.credentials;
+      return await this.service.changePassword(id, request.payload);
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async loginFacebook(request) {
     try {
       return await this.service.loginFacebook(request);

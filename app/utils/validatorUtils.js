@@ -1,9 +1,7 @@
 'use strict';
 
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 const CONST = require('../constants');
-
-const phoneValidJoi = Joi.extend(require('joi-phone-number'));
 
 function strSlug() {
   return Joi.string()
@@ -40,10 +38,7 @@ function strEmail() {
 }
 
 function strPhoneNumber() {
-  return phoneValidJoi.string().phoneNumber({
-    defaultCountry: 'VN',
-    format: 'e164'
-  });
+  return Joi.string().regex(/^\+{0,1}[0-9]{10,15}$/);
 }
 
 function strUsername() {
@@ -85,30 +80,6 @@ function objectLocalization() {
   });
 }
 
-function objectLocalizationWithSteps() {
-  return Joi.object({
-    order: Joi.number()
-      .integer()
-      .min(1)
-      .required(),
-    en: Joi.string().required(),
-    vi: Joi.string().required()
-  });
-}
-
-function objectGeoLocation() {
-  return Joi.object().keys({
-    latitude: Joi.number()
-      .min(-90)
-      .max(90)
-      .required(),
-    longitude: Joi.number()
-      .min(-180)
-      .max(180)
-      .required()
-  });
-}
-
 function strCaseStatusSlug() {
   return Joi.string().valid(CONST.CASE_STATUS);
 }
@@ -134,36 +105,46 @@ function idNumber() {
     .min(0);
 }
 
+function idUuid() {
+  return Joi.string().guid({
+    version: ['uuidv4']
+  });
+}
+
 const queryParams = {
   limit: Joi.number()
     .min(1)
     .max(100)
-    .default(100),
+    .default(10),
   offset: Joi.number().default(0),
   orderBy: Joi.string(),
-  filter: Joi.object(),
-  fields: Joi.array(),
-  page: Joi.number().positive(),
-  perPage: Joi.number()
-    .min(1)
-    .max(100)
+  filter: Joi.object().default({}),
+  fields: Joi.array()
 };
 
 const searchParams = {
   limit: Joi.number()
     .min(1)
     .max(100)
-    .default(100),
+    .default(10),
   offset: Joi.number().default(0),
   orderBy: Joi.string(),
   filter: Joi.object(),
   fields: Joi.array(),
-  page: Joi.number().positive(),
-  perPage: Joi.number()
-    .min(1)
-    .max(100),
   q: Joi.string()
 };
+
+const idParam = Joi.string()
+  .guid({
+    version: ['uuidv4']
+  })
+  .required()
+  .description('id is required');
+
+const headerParam = Joi.object({
+  Authorization: Joi.string(),
+  tenantslug: Joi.string()
+}).options({ allowUnknown: true });
 
 module.exports = {
   strSlug,
@@ -181,12 +162,13 @@ module.exports = {
   strCaseStatusSlug,
   objectIcon,
   objectLocalization,
-  objectLocalizationWithSteps,
-  objectGeoLocation,
   ratingValue,
   idNumber,
   strUpdateCaseStatusSlug,
   strBloodType,
   queryParams,
-  searchParams
+  searchParams,
+  idParam,
+  idUuid,
+  headerParam
 };

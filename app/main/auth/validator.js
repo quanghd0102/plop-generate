@@ -1,6 +1,6 @@
 'use strict';
 
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 const {
   strUsername,
   strEmail,
@@ -13,6 +13,7 @@ exports.validateLogin = {
 };
 
 exports.validateRegister = {
+  username: Joi.string().required(),
   email: strEmail().required(),
   password: strPassword().required()
 };
@@ -34,6 +35,13 @@ exports.resetPassword = {
   password: strPassword().required()
 };
 
+exports.changePassword = {
+  currentPassword: strPassword().required(),
+  password: strPassword().required()
+};
+
 exports.validateFacebook = {
-  access_token: Joi.string().required()
+  query: {
+    access_token: Joi.string().required()
+  }
 };

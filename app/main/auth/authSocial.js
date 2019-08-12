@@ -3,12 +3,12 @@
 const passport = require('passport');
 const FacebookTokenStrategy = require('passport-facebook-token');
 
+console.log(process.env.FB_ID);
 passport.use(
   new FacebookTokenStrategy(
     {
-      clientID: process.env.FACEBOOK_APP_ID || '434096090732921',
-      clientSecret:
-        process.env.FACEBOOK_APP_SECRET || 'c27ff7c2d27e8537197f6dd66b450930'
+      clientID: process.env.FB_ID || '555268428256971',
+      clientSecret: process.env.FB_SECRET || '61db5360bb10072796784532dc16f018'
     },
     (accessToken, refreshToken, profile, done) => {
       return done(null, profile);

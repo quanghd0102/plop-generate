@@ -3,9 +3,15 @@
 const crypto = require('crypto');
 
 function randomPassword(length) {
-  return Math.random()
-    .toString(36)
-    .substring(length);
+  console.log(length);
+  let result = '';
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    console.log('aa');
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
 }
 
 function randomToken() {

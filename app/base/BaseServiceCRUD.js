@@ -8,11 +8,12 @@ class BaseServiceCRUD {
   }
 
   async getMany(query) {
-    let builder = this.model.queryBuilder(query);
-    if (this.getSearchQuery && query.q) {
-      builder = this.getSearchQuery(builder, query.q);
-    }
-    return builder;
+    return this.model.queryBuilder(query);
+  }
+
+  async getMe(query, userid) {
+    query.filter.user = userid;
+    return this.model.queryBuilder(query);
   }
 
   async count() {
@@ -23,7 +24,7 @@ class BaseServiceCRUD {
   }
 
   async getOne(id) {
-    const result = await this.model.query().findById(id);
+    const result = await this.model.findById(id);
     if (!result) {
       throw Boom.notFound(`${this.modelName} not found`);
     }
@@ -31,14 +32,13 @@ class BaseServiceCRUD {
   }
 
   async createOne(payload) {
-    return this.model
-      .query()
-      .insert(payload)
-      .returning('*');
+    return this.model.create(payload);
   }
 
   async updateOne(id, payload) {
-    const result = await this.model.query().patchAndFetchById(id, payload);
+    const result = await this.model.findByIdAndUpdate(id, payload, {
+      new: true
+    });
     if (!result) {
       throw Boom.notFound(`${this.modelName} not found`);
     }
@@ -46,7 +46,7 @@ class BaseServiceCRUD {
   }
 
   async deleteOne(id) {
-    await this.model.query().deleteById(id);
+    await this.model.findByIdAndRemove(id);
     return { success: true };
   }
 }
