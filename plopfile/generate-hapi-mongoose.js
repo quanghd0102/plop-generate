@@ -23,12 +23,12 @@ const prompts = [
         name: 'type',
         message: 'Props Type: ',
         choices: [
-          { name: 'Boolean', value: 'boolean' },
-          { name: 'Number', value: 'number' },
-          { name: 'Object', value: 'object' },
-          { name: 'Array', value: 'array' },
-          { name: 'String', value: 'string' },
-          { name: 'Date', value: 'date' }
+          { name: 'Boolean', value: 'Boolean' },
+          { name: 'Number', value: 'Number' },
+          { name: 'Object', value: 'Object' },
+          { name: 'Array', value: 'Array' },
+          { name: 'String', value: 'String' },
+          { name: 'Date', value: 'Date' }
         ]
       },
       {
@@ -95,7 +95,7 @@ function customAction(data) {
       type: 'append',
       path: 'app/db/models/index.js',
       pattern: 'module.exports = {',
-      template: '  {{upperCaseFirstChart name}},'
+      template: '{{upperCaseFirstChart name}},'
     }
   ];
 
