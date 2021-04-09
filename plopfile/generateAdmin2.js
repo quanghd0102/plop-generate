@@ -1,3 +1,4 @@
+const pluralize = require('pluralize');
 const configInit = {
   description: 'generate init React Admin',
   prompts: [],
@@ -49,19 +50,6 @@ const configInit = {
       pattern: /(export)( )(default)( )(combineReducers)(\()(\{)/i,
       template: 'rest,\nrestFilter,'
     },
-    {
-      type: 'append',
-      path: 'src/redux/sagas.js',
-      pattern: "import { all } from 'redux-saga/effects';",
-      template:
-        "import restSaga from './rest/sagas';\nimport restFilterSaga from './restFilter/sagas';"
-    },
-    {
-      type: 'append',
-      path: 'src/redux/sagas.js',
-      pattern: /(yield)(.)(all)(\()(\[)/i,
-      template: '...restSaga, ...restFilterSaga,'
-    }
   ]
 };
 
@@ -79,7 +67,7 @@ const configGenerate = (rootPath = '.') => {
       path: rootPath + '/src/redux/reducers.js',
       // pattern: /(export)( )(default)( )(\{)/i,
       pattern: `// import here`,
-      template: "import {{pluralize name}} from './{{pluralize name}}/reducer';"
+      template: "import {{pluralize name}} from './{{pluralize name}}/slice';"
     },
     {
       type: 'append',
@@ -89,35 +77,25 @@ const configGenerate = (rootPath = '.') => {
       template: '    {{pluralize name}},'
     },
     {
-      type: 'modify',
-      path: 'src/redux/sagas.js',
-      // pattern: /(export)( )(default)( )(\{)/i,
-      pattern: `
-export default function* root() {`,
-      template: `import {{pluralize name}}Sagas from './{{pluralize name}}/sagas';
-
-export default function* root() {`
+      type: 'addMany',
+      skipIfExists: true,
+      templateFiles: [__dirname + '/../templates/react-admin-2/containers/Model/**/*.js'],
+      destination: rootPath + '/src/containers/{{upperCaseFirstChartWithPluralize name}}/',
+      base: __dirname + '/../templates/react-admin-2/containers/Model/'
     },
-    {
-      type: 'append',
-      path: 'src/redux/sagas.js',
-      pattern: /(yield)(.)(all)(\()(\[)/i,
-      template: '    ...{{pluralize name}}Sagas,'
-    },
-
     {
       type: 'addMany',
       skipIfExists: true,
-      templateFiles: [__dirname + '/../templates/react-admin-2/page/Model/**/*.js'],
+      templateFiles: [__dirname + '/../templates/react-admin-2/pages/Model/**/*.js'],
       destination: rootPath + '/src/pages/{{upperCaseFirstChartWithPluralize name}}/',
-      base: __dirname + '/../templates/react-admin-2/page/Model/'
+      base: __dirname + '/../templates/react-admin-2/pages/Model/'
     },
     {
       type: 'append',
       path: rootPath + '/src/routes/PrivateRoutes/index.js',
-      pattern: `import PrivateLayout from '../../layout/PrivateLayout';`,
+      pattern: `import PrivateLayout from 'layout/PrivateLayout';`,
       template:
-        "import {{upperCaseFirstChartWithPluralize name}} from '../../pages/{{upperCaseFirstChartWithPluralize name}}';"
+        "import {{upperCaseFirstChartWithPluralize name}} from 'pages/{{upperCaseFirstChartWithPluralize name}}';"
     },
 
     {
@@ -146,9 +124,9 @@ export default function* root() {`
     {
       type: 'append',
       path: rootPath + '/src/routes/ModalRoute/index.js',
-      pattern: `import Modal from '../../components/common/Modal';`,
+      pattern: `import Modal from 'components/common/Modal';`,
       template:
-        "import {{upperCaseFirstChartWithPluralize name}} from '../../pages/{{upperCaseFirstChartWithPluralize name}}';"
+        "import {{upperCaseFirstChartWithPluralize name}} from 'pages/{{upperCaseFirstChartWithPluralize name}}';"
     },
     {
       type: 'append',
@@ -179,7 +157,7 @@ export default function* root() {`
       type: 'append',
       path: rootPath + '/src/redux/crudActions.js',
       pattern: `// import crud action`,
-      template: "import {{pluralize name}} from './{{pluralize name}}/actions';"
+      template: "import { {{pluralize name}}Actions as {{pluralize name}} } from './{{pluralize name}}/actions';"
     },
     {
       type: 'append',
@@ -250,14 +228,14 @@ const customAction = (rootPath = '.') => data => {
 
   actions.push({
     type: 'modify',
-    path: rootPath + '/src/pages/{{upperCaseFirstChartWithPluralize name}}/List/index.js',
+    path: rootPath + '/src/containers/{{upperCaseFirstChartWithPluralize name}}/List/index.js',
     pattern: '//content here',
     template: modelList
   });
   actions.push({
     type: 'modify',
     path:
-      rootPath + '/src/pages/{{upperCaseFirstChartWithPluralize name}}/components/Form/index.js',
+      rootPath + '/src/containers/{{upperCaseFirstChartWithPluralize name}}/components/Form/index.js',
     pattern: '//content here',
     template: modelForm
   });
@@ -265,13 +243,13 @@ const customAction = (rootPath = '.') => data => {
   actions.push({
     type: 'modify',
     path:
-      rootPath + '/src/pages/{{upperCaseFirstChartWithPluralize name}}/components/Filter/index.js',
+      rootPath + '/src/containers/{{upperCaseFirstChartWithPluralize name}}/components/Filter/index.js',
     pattern: '//content here',
     template: modelFilter
   });
   actions.push({
     type: 'modify',
-    path: rootPath + '/src/pages/{{upperCaseFirstChartWithPluralize name}}/Show/index.js',
+    path: rootPath + '/src/containers/{{upperCaseFirstChartWithPluralize name}}/Show/index.js',
     pattern: '//content here',
     template: modelShow
   });

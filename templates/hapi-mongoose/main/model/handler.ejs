@@ -8,14 +8,10 @@ export const getMany = {
   notes: 'Return {{upperCaseFirstChart name}} items',
   tags: ['api', 'v1'],
   handler: controller.getMany.bind(controller),
-<<<<<<< HEAD:templates/hapi-mongoose/main/model/handler.js
-  auth: false,
-=======
   auth: {
     strategy: 'jwt',
     // scope: ['admin', 'user']
   },
->>>>>>> upstream/master:templates/hapi-mongoose/main/model/handler.ejs
   validate: {
     headers: checkToken,
     query: queryParams
@@ -27,14 +23,10 @@ export const count = {
   notes: 'Return a count result of {{upperCaseFirstChart name}} items',
   tags: ['api', 'v1'],
   handler: controller.count.bind(controller),
-<<<<<<< HEAD:templates/hapi-mongoose/main/model/handler.js
-  auth: false,
-=======
   auth: {
     strategy: 'jwt',
     // scope: ['admin', 'user']
   },
->>>>>>> upstream/master:templates/hapi-mongoose/main/model/handler.ejs
   validate: {
     headers: checkToken
   }
@@ -45,15 +37,11 @@ export const getOne = {
   notes: 'Return a {{upperCaseFirstChart name}} by id',
   tags: ['api', 'v1'],
   handler: controller.getOne.bind(controller),
-<<<<<<< HEAD:templates/hapi-mongoose/main/model/handler.js
-  auth: false,
-=======
   auth: 'jwt',
   auth: {
     strategy: 'jwt',
     // scope: ['admin']
   },
->>>>>>> upstream/master:templates/hapi-mongoose/main/model/handler.ejs
   validate: {
     headers: checkToken,
     params: {
@@ -67,12 +55,6 @@ export const createOne = {
   notes: 'Return created {{upperCaseFirstChart name}}',
   tags: ['api', 'v1'],
   handler: controller.createOne.bind(controller),
-<<<<<<< HEAD:templates/hapi-mongoose/main/model/handler.js
-  auth: false,
-  validate: {
-    headers: validator.checkToken,
-    payload: validator.create{{upperCaseFirstChart name}}
-=======
   auth: {
     strategy: 'jwt',
     // scope: ['admin']
@@ -80,7 +62,6 @@ export const createOne = {
   validate: {
     headers: checkToken,
     payload: create{{upperCaseFirstChart name}}
->>>>>>> upstream/master:templates/hapi-mongoose/main/model/handler.ejs
   }
 };
 
@@ -89,24 +70,16 @@ export const updateOne = {
   notes: 'Return updated {{upperCaseFirstChart name}} by id',
   tags: ['api', 'v1'],
   handler: controller.updateOne.bind(controller),
-<<<<<<< HEAD:templates/hapi-mongoose/main/model/handler.js
-  auth: false,
-=======
   auth: {
     strategy: 'jwt',
     // scope: ['admin']
   },
->>>>>>> upstream/master:templates/hapi-mongoose/main/model/handler.ejs
   validate: {
     headers: checkToken,
     params: {
       id: idParam
     },
-<<<<<<< HEAD:templates/hapi-mongoose/main/model/handler.js
-    payload: validator.update{{upperCaseFirstChart name}}
-=======
     payload: update{{upperCaseFirstChart name}}
->>>>>>> upstream/master:templates/hapi-mongoose/main/model/handler.ejs
   }
 };
 
@@ -115,7 +88,10 @@ export const deleteOne = {
   notes: 'Return deleted {{upperCaseFirstChart name}} by id',
   tags: ['api', 'v1'],
   handler: controller.deleteOne.bind(controller),
-  auth: false,
+  auth: {
+    strategy: 'jwt',
+    scope: ['admin']
+  },
   validate: {
     headers: checkToken,
     params: {
